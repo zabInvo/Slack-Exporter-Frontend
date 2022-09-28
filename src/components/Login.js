@@ -36,11 +36,11 @@ export default function Login() {
           }}
         >
           <img
-            width={"150%"}
+            width={"100%"}
             src={
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Slack_Technologies_Logo.svg/1024px-Slack_Technologies_Logo.svg.png"
+              // "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Slack_Technologies_Logo.svg/1024px-Slack_Technologies_Logo.svg.png"
               // "https://a.slack-edge.com/ae57/img/slack_api_logo.png"
-              // "https://a.slack-edge.com/3026cb/img/slack_api_logo_vogue.png"
+              "https://a.slack-edge.com/3026cb/img/slack_api_logo_vogue.png"
             }
             alt="Slack Logo"
           />
@@ -92,7 +92,7 @@ export default function Login() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
