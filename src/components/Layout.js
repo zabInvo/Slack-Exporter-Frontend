@@ -129,7 +129,7 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} style={{ background: '#2E3B55' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -174,6 +174,7 @@ export default function MiniDrawer() {
             <Link
               key={index}
               as={Link}
+              to={text.name.split(" ")[0]}
               style={{
                 textDecoration: "none",
               }}
