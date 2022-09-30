@@ -67,9 +67,9 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer() {
+export default function Layout() {
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -80,25 +80,30 @@ export default function MiniDrawer() {
       icon: DashboardIcon,
     },
     {
-      name: "public groups",
+      name: "public Channels",
       icon: HomeWorkIcon,
     },
     {
-      name: "private groups",
+      name: "private Channels",
       icon: PeopleAltIcon,
     },
     {
-      name: "setting",
+      name: "Mapping",
       icon: SettingsIcon,
     },
   ];
 
-  function logout() {}
+  function logout() {
+    navigate("/login");
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <div className="navbar cover alignment" style={{ background: '#2E3B55' }}>
+      <div
+        className="navbar cover alignment"
+        style={{ background: "rgb(64 14 64)" }}
+      >
         <div className={open ? "opened" : "closed"}>Slack Exporter</div>
       </div>
       <Drawer variant="permanent" open={open}>
@@ -170,7 +175,7 @@ export default function MiniDrawer() {
           />
         </ListItem>
       </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Outlet />
       </Box>

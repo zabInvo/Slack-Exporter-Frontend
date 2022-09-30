@@ -8,7 +8,7 @@ const initialState = {
       case "SET_PUBLIC_CHANNELS":
         return { ...state, public: payload };
       case "SET_PRIVATE_CHANNELS":
-        return { ...state, private:payload };
+        return { ...state, private: payload };
       default:
         return state;
     }

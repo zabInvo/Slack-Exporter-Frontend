@@ -10,15 +10,15 @@ import { blue } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import _ from "lodash";
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchPubblicChannels } from "../redux/actions/action";
+import { fetchPrivateChannels } from "../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,22 +40,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function PublicChannels() {
+function PrivateChannels() {
   const [filterText, setFilterText] = useState("");
   const [channels, setChannels] = useState([]);
   const [sorting, setSorting] = useState("desc");
   const dispatch = useDispatch();
-  const publicGroups = useSelector((state) =>
-    state.channelsReducers.public ? state.channelsReducers.public : []
+  const privateGroups = useSelector((state) =>
+    state.channelsReducers.private ? state.channelsReducers.private : []
   );
 
   useEffect(() => {
-    dispatch(fetchPubblicChannels());
+    dispatch(fetchPrivateChannels());
   }, []);
 
   useEffect(() => {
-    setChannels(publicGroups);
-  }, [publicGroups]);
+    setChannels(privateGroups);
+  }, [privateGroups]);
 
   const syncHistroyData = (item) => {};
 
@@ -101,7 +101,7 @@ function PublicChannels() {
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant="h4">Public Channels</Typography>
+        <Typography variant="h4">Private Channels</Typography>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <TextField
@@ -114,7 +114,7 @@ function PublicChannels() {
       <Grid container>
         <TableContainer
           component={Paper}
-          sx={{ mt: 3 }}
+          sx={{ mt: 5 }}
           style={{ maxHeight: "600px" }}
         >
           <Table
@@ -190,4 +190,4 @@ function PublicChannels() {
   );
 }
 
-export default PublicChannels;
+export default PrivateChannels;

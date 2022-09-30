@@ -21,7 +21,7 @@ const fetchPrivateChannels = (payload) => async (dispatch) => {
       type: "private_channel",
     };
     const channels = await service.post("/fetch-groups", token, payload);
-    dispatch({ type: "SET_PUBLIC_CHANNELS", payload: channels.data.data });
+    dispatch({ type: "SET_PRIVATE_CHANNELS", payload: channels.data.data });
   } catch (error) {
     console.log(error);
   }
@@ -29,7 +29,7 @@ const fetchPrivateChannels = (payload) => async (dispatch) => {
 
 const syncChannelHistroy = (payload) => async (dispatch) => {
   try {
-    const companies = await service.post("company/getCompanies", token, "");
+    const companies = await service.post("company/getCompanies", token, payload);
     dispatch({ type: "SET_PRIVATE_CHANNELS", payload: companies.data.data });
   } catch (error) {
     console.log(error);

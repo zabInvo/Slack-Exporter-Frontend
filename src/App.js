@@ -7,6 +7,9 @@ import store from "./redux/store";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
 import PublicChannels from "./components/PublicChannels";
+import PrivateChannels from "./components/PrivateChannels";
+import Mapping from "./components/Mapping";
+
 
 function App() {
   return (
@@ -16,6 +19,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Layout />}>
             <Route path="public" element={<PublicChannels />} />
+            <Route path="private" element={<PrivateChannels />} />
+            <Route path="mapping" element={<Mapping />} />\
           </Route>
         </Routes>
       </Provider>
