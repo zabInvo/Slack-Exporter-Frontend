@@ -8,8 +8,8 @@ import Layout from "./components/Layout";
 import Login from "./components/Login";
 import PublicChannels from "./components/PublicChannels";
 import PrivateChannels from "./components/PrivateChannels";
-import Mapping from "./components/Mapping";
-
+import PrivateMapping from "./components/PrivateMapping";
+import PublicMapping from "./components/PublicMapping";
 
 function App() {
   return (
@@ -18,9 +18,14 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Layout />}>
+            <Route
+              path="dashboard"
+              element={<div>Under Construction. 🚧</div>}
+            />
             <Route path="public" element={<PublicChannels />} />
             <Route path="private" element={<PrivateChannels />} />
-            <Route path="mapping" element={<Mapping />} />\
+            <Route path="publicmap" element={<PublicMapping />} />
+            <Route path="privatemap" element={<PrivateMapping />} />
           </Route>
         </Routes>
       </Provider>

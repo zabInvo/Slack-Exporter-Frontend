@@ -10,13 +10,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import HomeWorkIcon from "@mui/icons-material/HomeWork";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import PublicIcon from "@mui/icons-material/Public";
 import { Outlet, useNavigate } from "react-router-dom";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import "../index.css";
 const drawerWidth = 240;
 
@@ -78,18 +79,27 @@ export default function Layout() {
     {
       name: "dashboard",
       icon: DashboardIcon,
+      to: "/dashboard",
     },
     {
       name: "public Channels",
-      icon: HomeWorkIcon,
+      icon: PublicIcon,
+      to: "/public",
     },
     {
       name: "private Channels",
-      icon: PeopleAltIcon,
+      icon: RemoveCircleIcon,
+      to: "/private",
     },
     {
-      name: "Mapping",
-      icon: SettingsIcon,
+      name: "Public Mapping",
+      icon: PeopleAltIcon,
+      to: "/publicmap",
+    },
+    {
+      name: "Private Mapping",
+      icon: LockPersonIcon,
+      to: "/privatemap",
     },
   ];
 
@@ -137,7 +147,7 @@ export default function Layout() {
             <Link
               key={index}
               as={Link}
-              to={text.name.split(" ")[0]}
+              to={text.to}
               style={{
                 textDecoration: "none",
               }}
