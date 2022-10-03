@@ -149,6 +149,7 @@ function PrivateChannels() {
                     <ImportExportIcon />
                   </IconButton>
                 </StyledTableCell>
+                <StyledTableCell align="center">Last Updated</StyledTableCell>
                 <StyledTableCell align="center">Edit</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -169,6 +170,9 @@ function PrivateChannels() {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {convertDate(item.created)}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.lastUpdated ? convertDate(item.lastUpdated) : 'N/A'}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}
