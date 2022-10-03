@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -15,13 +15,16 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme();
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    if (data.get("email") === "admin" && data.get("password") === "test1234") {
+      navigate("/");
+    } else {
+      alert("Wrong email and password");
+    }
   };
 
   return (
@@ -78,16 +81,15 @@ export default function Login() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <RouterLink style={{ textDecoration: "none" }} to="/">
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign in
-              </Button>
-            </RouterLink>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign in
+            </Button>
+
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -95,8 +97,9 @@ export default function Login() {
                 </Link>
               </Grid>
               <Grid item>
+                <small>Don't have an account ? </small>
                 <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Sign Up"}
                 </Link>
               </Grid>
             </Grid>
