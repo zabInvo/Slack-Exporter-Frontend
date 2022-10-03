@@ -21,7 +21,7 @@ export default function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (data.get("email") === "admin" && data.get("password") === "test1234") {
-      navigate("/");
+      navigate("/dashboard");
     } else {
       alert("Wrong email and password");
     }
