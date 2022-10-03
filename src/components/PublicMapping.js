@@ -49,7 +49,7 @@ export default function PublicMapping() {
   }, [publicGroups]);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
