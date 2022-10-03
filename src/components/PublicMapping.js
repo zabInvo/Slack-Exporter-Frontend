@@ -12,6 +12,8 @@ import { blue } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPubblicChannels } from "../redux/actions/action";
+import { TextField } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,7 +36,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function PublicMapping() {
-  const [rows, setRows] = useState();
+  const [channels, setChannels] = useState([]);
+  const [filterText, setFilterText] = useState("");
+  const filteredItems = channels.filter((item) => {
+    return (
+      (item.name &&
+        item.name.toLowerCase().includes(filterText.toLowerCase())) ||
+      (item.id && item.id.toLowerCase().includes(filterText.toLowerCase()))
+    );
+  });
+
   const dispatch = useDispatch();
   const publicGroups = useSelector((state) =>
     state.channelsReducers.public ? state.channelsReducers.public : []
@@ -42,60 +53,88 @@ export default function PublicMapping() {
 
   useEffect(() => {
     dispatch(fetchPubblicChannels());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    setRows(publicGroups);
+    setChannels(publicGroups);
   }, [publicGroups]);
 
   return (
-    <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>
-              <b>Channel Name</b>
-            </StyledTableCell>
-            <StyledTableCell align="center">
-              <b>Channel Id</b>
-            </StyledTableCell>
-            <StyledTableCell align="center">
-              <b>Mattermost channel name</b>
-            </StyledTableCell>
-            <StyledTableCell align="center">
-              <b>Fowarding URL</b>
-            </StyledTableCell>
-            <StyledTableCell align="center">
-              <b>Actions</b>
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows?.map((row, indx) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.id}</StyledTableCell>
-              <StyledTableCell align="center">
-                <Input placeholder="Enter Channel Name" />
+    <>
+      <div style={{ textAlign: "center" }}>
+        <Typography variant="h4">Public Mappings</Typography>
+        <TextField
+          label="Search"
+          placeholder="Search channels with name and ids"
+          sx={{ mb: 4, mt: 4, width: "50ch" }}
+          onChange={(e) => setFilterText(e.target.value)}
+        />
+      </div>
+      <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table" stickyHeader> 
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>
+                <b>Channel Name</b>
               </StyledTableCell>
               <StyledTableCell align="center">
-                <Input placeholder="Enter URL" />
+                <b>Channel Id</b>
               </StyledTableCell>
               <StyledTableCell align="center">
-                <Button
-                  key={indx}
-                  variant="contained"
-                  style={{ margin: "4px" }}
-                >
-                  Submit
-                </Button>
+                <b>Mattermost channel name</b>
               </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+              <StyledTableCell align="center">
+                <b>Fowarding URL</b>
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <b>Actions</b>
+              </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          {filteredItems?.length !== 0 ? (
+            <TableBody>
+              {filteredItems?.map((row, indx) => (
+                <StyledTableRow key={row.name}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.name}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{row.id}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Input placeholder="Enter Channel Name" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Input placeholder="Enter URL" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button
+                      key={indx}
+                      variant="contained"
+                      style={{ margin: "4px" }}
+                    >
+                      Submit
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          ) : (
+            <div
+              className={
+                // eslint-disable-next-line
+                location?.pathname == "/privatemap" ||
+                // eslint-disable-next-line
+                location?.pathname == "/publicmap"
+                  ? "middle-70"
+                  : "middle"
+              }
+            >
+              <div>{"</>"}</div>
+              <br />
+              <div style={{ fontWeight: "bolder" }}>No data to show.</div>
+            </div>
+          )}
+        </Table>
+      </TableContainer>
+    </>
   );
 }

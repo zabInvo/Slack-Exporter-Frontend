@@ -51,3 +51,23 @@ code {
   transition: 0.2s;
   transition: 0.2s ease-in-out;
 }
+
+.middle {
+  margin-top: 80px;
+  position: relative;
+  left: 175%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: gray;
+}
+
+.middle-70 {
+  margin-top: 80px;
+  position: relative;
+  left: 260%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: gray;
+}
