@@ -18,6 +18,7 @@ import { useState } from "react";
 import PublicIcon from "@mui/icons-material/Public";
 import { Outlet, useNavigate } from "react-router-dom";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import { Button } from "@mui/material";
 import "../index.css";
 const drawerWidth = 240;
 
@@ -69,9 +70,15 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Layout() {
+  const [channels, setChannels] = useState(false);
+  const [mappings, setMappings] = useState(false);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const toggleDrawer = () => {
+    if (open) {
+      setChannels(false);
+      setMappings(false);
+    }
     setOpen(!open);
   };
 
@@ -82,24 +89,42 @@ export default function Layout() {
       to: "/dashboard",
     },
     {
-      name: "public Channels",
+      name: "Channels",
       icon: PublicIcon,
       to: "/public",
+      onclick: () => setChannels(!channels),
+      state: () => {
+        return {
+          state: channels,
+          private: {
+            icon: "",
+            to: "/private",
+          },
+          public: {
+            icon: "",
+            to: "/public",
+          },
+        };
+      },
     },
     {
-      name: "private Channels",
-      icon: RemoveCircleIcon,
-      to: "/private",
-    },
-    {
-      name: "Public Mapping",
+      name: "Mapping",
       icon: PeopleAltIcon,
       to: "/publicmap",
-    },
-    {
-      name: "Private Mapping",
-      icon: LockPersonIcon,
-      to: "/privatemap",
+      onclick: () => setMappings(!mappings),
+      state: () => {
+        return {
+          state: mappings,
+          private: {
+            icon: "",
+            to: "/privatemap",
+          },
+          public: {
+            icon: "",
+            to: "/publicmap",
+          },
+        };
+      },
     },
   ];
 
@@ -152,22 +177,55 @@ export default function Layout() {
                 textDecoration: "none",
               }}
             >
-              <ListItem button key={text.name}>
-                <ListItemIcon>
-                  <text.icon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{
-                    mt: 1,
-                    color: "black",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                  primary={
-                    text.name.charAt(0).toUpperCase() + text.name.slice(1)
-                  }
-                />
+              <ListItem
+                button
+                key={text.name}
+                onClick={text.name !== "dashboard" ? text.onclick : null}
+              >
+                <div style={{ display: "flex" }}>
+                  <ListItemIcon>
+                    <text.icon />
+                  </ListItemIcon>
+
+                  <ListItemText
+                    sx={{
+                      mt: 1,
+                      color: "black",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                    }}
+                    primary={
+                      text.name.charAt(0).toUpperCase() + text.name.slice(1)
+                    }
+                  />
+                </div>
               </ListItem>
+              {text.name !== "dashboard" && text.state().state && open ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginLeft: "50px",
+                  }}
+                >
+                  <Link
+                    to={text.state().public.to}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Button>{"Public " + text.name}</Button>
+                  </Link>
+                  <Link
+                    to={text.state().private.to}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Button>{"Private " + text.name}</Button>
+                  </Link>
+                </div>
+              ) : null}
             </Link>
           ))}
         </List>

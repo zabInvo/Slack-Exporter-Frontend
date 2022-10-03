@@ -99,11 +99,6 @@ export default function Dashboard() {
     // dispatch(fetchSlackStats());
   }, []);
 
-  useEffect(() => {
-    setChannels(state);
-    console.log(state);
-  }, [state]);
-
   return (
     <div
       style={{

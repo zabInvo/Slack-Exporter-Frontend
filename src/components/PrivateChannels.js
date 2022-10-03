@@ -4,6 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
+import { Card } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { blue } from "@mui/material/colors";
@@ -151,38 +152,46 @@ function PrivateChannels() {
                 <StyledTableCell align="center">Edit</StyledTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {filteredItems.map((item, index) => (
-                <StyledTableRow key={index}>
-                  <StyledTableCell
-                    component="th"
-                    scope="row"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    {item.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{item.id}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {item.num_members}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {convertDate(item.created)}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {" "}
-                    <Button
-                      color="success"
-                      size="small"
-                      onClick={() => {
-                        syncHistroyData(item);
-                      }}
+            {channels.length !== 0 ? (
+              <TableBody>
+                {filteredItems.map((item, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      style={{ fontWeight: "bold" }}
                     >
-                      Sync Histroy
-                    </Button>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
+                      {item.name}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{item.id}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.num_members}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {convertDate(item.created)}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {" "}
+                      <Button
+                        color="success"
+                        size="small"
+                        onClick={() => {
+                          syncHistroyData(item);
+                        }}
+                      >
+                        Sync Histroy
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            ) : (
+              <div className="middle">
+                <div>{"</>"}</div>
+                <br />
+                <div style={{ fontWeight: "bolder" }}>No data to show.</div>
+              </div>
+            )}
           </Table>
         </TableContainer>
       </Grid>
