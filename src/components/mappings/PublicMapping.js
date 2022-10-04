@@ -52,12 +52,20 @@ export default function PublicMapping() {
   );
 
   useEffect(() => {
-    dispatch(fetchPubblicChannels());
+    dispatchApi();
   }, [dispatch]);
 
   useEffect(() => {
     setChannels(publicGroups);
   }, [publicGroups]);
+
+  const dispatchApi = _.throttle(
+    function () {
+      dispatch(fetchPubblicChannels());
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
 
   return (
     <>

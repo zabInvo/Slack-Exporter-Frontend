@@ -51,12 +51,20 @@ function PublicChannels() {
   );
 
   useEffect(() => {
-    dispatch(fetchPubblicChannels());
+    dispatchApi();
   }, []);
 
   useEffect(() => {
     setChannels(publicGroups);
   }, [publicGroups]);
+
+  const dispatchApi = _.throttle(
+    function () {
+      dispatch(fetchPubblicChannels());
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
 
   const syncHistroyData = (item) => {};
 
@@ -164,7 +172,9 @@ function PublicChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{item.slackId}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.slackId}
+                    </StyledTableCell>
                     <StyledTableCell align="center">
                       {item.membersCount}
                     </StyledTableCell>
@@ -172,7 +182,9 @@ function PublicChannels() {
                       {convertDate(item.creationDate)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.lastUpdatedAt ? moment(item.lastUpdatedAt).format('LLL') : "N/A"}
+                      {item.lastUpdatedAt
+                        ? moment(item.lastUpdatedAt).format("LLL")
+                        : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}

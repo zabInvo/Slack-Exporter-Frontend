@@ -15,7 +15,6 @@ import Grid from "@mui/material/Grid";
 import _ from "lodash";
 import moment from "moment";
 
-
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -51,7 +50,7 @@ function PrivateChannels() {
   );
 
   useEffect(() => {
-    dispatch(fetchPrivateChannels());
+    dispatchApi();
   }, []);
 
   useEffect(() => {
@@ -59,6 +58,14 @@ function PrivateChannels() {
   }, [privateGroups]);
 
   const syncHistroyData = (item) => {};
+
+  const dispatchApi = _.throttle(
+    function () {
+      dispatch(fetchPrivateChannels());
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
 
   const filteredItems = channels.filter((item) => {
     return (
@@ -164,7 +171,9 @@ function PrivateChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{item.slackId}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.slackId}
+                    </StyledTableCell>
                     <StyledTableCell align="center">
                       {item.membersCount}
                     </StyledTableCell>
@@ -172,7 +181,9 @@ function PrivateChannels() {
                       {convertDate(item.creationDate)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.lastUpdatedAt ? moment(item.lastUpdatedAt).format('LLL') : "N/A"}
+                      {item.lastUpdatedAt
+                        ? moment(item.lastUpdatedAt).format("LLL")
+                        : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}

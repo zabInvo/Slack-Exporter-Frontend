@@ -52,12 +52,20 @@ export default function PrivateMapping() {
   );
 
   useEffect(() => {
-    dispatch(fetchPrivateChannels());
-  }, [dispatch]);
+    dispatchApi();
+  }, []);
 
   useEffect(() => {
     setChannels(publicGroups);
   }, [publicGroups]);
+
+  const dispatchApi = _.throttle(
+    function () {
+      dispatch(fetchPrivateChannels());
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
 
   return (
     <>
