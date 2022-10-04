@@ -8,16 +8,16 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import { Button } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPrivateChannels } from "../redux/actions/action";
-import { Typography, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
+import Typography from "@mui/material/Typography";
+
+import { fetchPubblicChannels } from "../../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "rgb(80, 7, 80)",
-
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -35,7 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function PrivateMapping() {
+export default function PublicMapping() {
   const [channels, setChannels] = useState([]);
   const [filterText, setFilterText] = useState("");
   const filteredItems = channels.filter((item) => {
@@ -48,11 +48,11 @@ export default function PrivateMapping() {
 
   const dispatch = useDispatch();
   const publicGroups = useSelector((state) =>
-    state.channelsReducers.private ? state.channelsReducers.private : []
+    state.channelsReducers.public ? state.channelsReducers.public : []
   );
 
   useEffect(() => {
-    dispatch(fetchPrivateChannels());
+    dispatch(fetchPubblicChannels());
   }, [dispatch]);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function PrivateMapping() {
   return (
     <>
       <div style={{ textAlign: "center" }}>
-        <Typography variant="h4">Private Mappings</Typography>
+        <Typography variant="h4">Public Mappings</Typography>
         <TextField
           label="Search"
           placeholder="Search channels with name and ids"
