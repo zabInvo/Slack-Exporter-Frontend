@@ -157,6 +157,7 @@ export default function Layout() {
             src="https://www.pngkey.com/png/full/984-9844126_slack-new-slack-logo-png.png"
             width={"40px"}
             style={{ marginLeft: "6px" }}
+            alt="N/A"
           />
           {!open ? (
             <>
@@ -204,11 +205,9 @@ export default function Layout() {
               <Link to={"/publicmap"}>Public mappinng</Link>
             </MenuItem>
           </SubMenu>
-          <SubMenu title="Settings" icon={<SettingsIcon />}>
-            <MenuItem>General</MenuItem>
-            <MenuItem>Account</MenuItem>
-            <MenuItem>Prefrences</MenuItem>
-          </SubMenu>
+          <MenuItem icon={<SettingsIcon />}>
+            <Link to={"/publicmap"}>Settings</Link>
+          </MenuItem>
           <MenuItem icon={<LogoutIcon />}>
             <Link to={"/login"} style={{ color: "white" }}>
               Logout
