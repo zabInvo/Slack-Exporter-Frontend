@@ -99,10 +99,16 @@ export default function PrivateMapping() {
             <TableBody>
               {filteredItems?.map((row, indx) => (
                 <StyledTableRow key={row.name}>
-                  <StyledTableCell component="th" scope="row">
+                  <StyledTableCell
+                    component="th"
+                    scope="row"
+                    style={{ fontWeight: "bold" }}
+                  >
                     {row.name}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{row.id}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.slackId}
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     <Input placeholder="Enter Channel Name" />
                   </StyledTableCell>

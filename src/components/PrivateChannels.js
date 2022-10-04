@@ -16,6 +16,8 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import _ from "lodash";
+import moment from "moment";
+
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -165,15 +167,15 @@ function PrivateChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{item.id}</StyledTableCell>
+                    <StyledTableCell align="center">{item.slackId}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.num_members}
+                      {item.membersCount}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {convertDate(item.created)}
+                      {convertDate(item.creationDate)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.lastUpdated ? convertDate(item.lastUpdated) : "N/A"}
+                      {item.lastUpdatedAt ? moment(item.lastUpdatedAt).format('LLL') : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}
