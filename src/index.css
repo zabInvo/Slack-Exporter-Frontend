@@ -55,7 +55,7 @@ code {
 .middle {
   margin-top: 80px;
   position: relative;
-  left: 175%;
+  left: 220%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   text-align: center;

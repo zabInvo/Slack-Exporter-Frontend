@@ -153,7 +153,7 @@ function PrivateChannels() {
                 <StyledTableCell align="center">Edit</StyledTableCell>
               </TableRow>
             </TableHead>
-            {channels.length !== 0 ? (
+            {filteredItems.length !== 0 ? (
               <TableBody>
                 {filteredItems.map((item, index) => (
                   <StyledTableRow key={index}>
