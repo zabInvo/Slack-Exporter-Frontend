@@ -12,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -20,6 +21,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Button } from "@mui/material";
 import "../index.css";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import "react-pro-sidebar/dist/css/styles.css";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -138,111 +141,81 @@ export default function Layout() {
       <div
         className="navbar cover alignment"
         style={{ background: "rgb(64 14 64)" }}
-      >
-        <div className={open ? "opened" : "closed"}>Slack Exporter</div>
-      </div>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          {open ? (
-            <img
-              src="https://a.slack-edge.com/3026cb/img/slack_api_logo_vogue.png"
-              alt="slack"
-              width={160}
-              style={{ margin: "auto" }}
-            />
-          ) : (
-            ""
-          )}
-          <IconButton onClick={toggleDrawer}>
-            {open ? (
-              <ChevronLeftIcon />
-            ) : (
-              <img
-                src="slack.png"
-                alt="alt"
-                width={25}
-                style={{ margin: "auto" }}
-              />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {navigation.map((text, index) => (
-            <Link
-              key={index}
-              as={Link}
-              to={text.to}
-              style={{
-                textDecoration: "none",
-              }}
-            >
-              <ListItem
-                button
-                key={text.name}
-                onClick={text.name !== "dashboard" ? text.onclick : null}
-              >
-                <div style={{ display: "flex" }}>
-                  <ListItemIcon>
-                    <text.icon />
-                  </ListItemIcon>
-
-                  <ListItemText
-                    sx={{
-                      mt: 1,
-                      color: "black",
-                      fontWeight: 600,
-                      textDecoration: "none",
-                    }}
-                    primary={
-                      text.name.charAt(0).toUpperCase() + text.name.slice(1)
-                    }
-                  />
-                </div>
-              </ListItem>
-              {text.name !== "dashboard" && text.state().state && open ? (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginLeft: "50px",
-                  }}
-                >
-                  <Link
-                    to={text.state().public.to}
-                    style={{
-                      textDecoration: "none",
-                    }}
-                  >
-                    <Button>{"Public " + text.name}</Button>
-                  </Link>
-                  <Link
-                    to={text.state().private.to}
-                    style={{
-                      textDecoration: "none",
-                    }}
-                  >
-                    <Button>{"Private " + text.name}</Button>
-                  </Link>
-                </div>
-              ) : null}
-            </Link>
-          ))}
-        </List>
-        <ListItem button onClick={logout}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText
-            sx={{
-              mt: 1,
-              color: "black",
-              textDecoration: "none",
-            }}
-            primary={"Logout"}
+      ></div>
+      <ProSidebar style={{ height: "100vh" }} collapsed={open}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            alignContent: "center",
+            padding: "12px",
+            background: "rgb(64, 26, 64) !important",
+          }}
+        >
+          <img
+            onClick={() => (open ? toggleDrawer() : null)}
+            src="https://www.pngkey.com/png/full/984-9844126_slack-new-slack-logo-png.png"
+            width={"40px"}
+            style={{ marginLeft: "6px" }}
           />
-        </ListItem>
-      </Drawer>
+          {!open ? (
+            <>
+              {" "}
+              <div
+                style={{
+                  marginLeft: "12px",
+                  fontWeight: "bolder",
+                  fontSize: "18px",
+                  width: "100%",
+                  color: "white",
+                }}
+              >
+                Slack Exporter
+              </div>
+              <div
+                style={{ marginTop: "8px", marginLeft: "18px" }}
+                onClick={toggleDrawer}
+              >
+                <ChevronLeftIcon />
+              </div>
+            </>
+          ) : null}
+        </div>
+        <div style={{ padding: "1px", backgroundColor: "white" }}></div>
+        <Menu iconShape="circle" style={{ color: "white" }}>
+          <MenuItem icon={<DashboardIcon />}>
+            <Link to={"/dashboard"} style={{ color: "white" }}>
+              Dashboard
+            </Link>
+          </MenuItem>
+          <SubMenu icon={<PublicIcon />} title="Channels">
+            <MenuItem>
+              <Link to={"/private"}>Private channels</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to={"/public"}>Public channels</Link>
+            </MenuItem>
+          </SubMenu>
+          <SubMenu icon={<LockPersonIcon />} title="Mapping">
+            <MenuItem>
+              <Link to={"/privatemap"}>Private mapping</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to={"/publicmap"}>Public mappinng</Link>
+            </MenuItem>
+          </SubMenu>
+          <SubMenu title="Settings" icon={<SettingsIcon />}>
+            <MenuItem>General</MenuItem>
+            <MenuItem>Account</MenuItem>
+            <MenuItem>Prefrences</MenuItem>
+          </SubMenu>
+          <MenuItem icon={<LogoutIcon />}>
+            <Link to={"/login"} style={{ color: "white" }}>
+              Logout
+            </Link>
+          </MenuItem>
+        </Menu>
+      </ProSidebar>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Outlet />

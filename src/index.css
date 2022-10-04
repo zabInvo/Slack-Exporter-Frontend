@@ -71,3 +71,14 @@ code {
   text-align: center;
   color: gray;
 }
+.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout {
+  background-color: rgb(80 7 80);
+}
+
+.pro-sidebar
+  .pro-menu.shaped
+  .pro-menu-item
+  > .pro-inner-item
+  > .pro-icon-wrapper {
+  background-color: transparent !important;
+}
