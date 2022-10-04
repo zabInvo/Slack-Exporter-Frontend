@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { blue } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
@@ -22,7 +22,8 @@ import { fetchPubblicChannels } from "../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: blue["900"],
+    backgroundColor: grey[800],
+
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -171,7 +172,7 @@ function PublicChannels() {
                       {convertDate(item.created)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.lastUpdated ? convertDate(item.lastUpdated) : 'N/A'}
+                      {item.lastUpdated ? convertDate(item.lastUpdated) : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}

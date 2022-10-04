@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import { Button } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPrivateChannels } from "../redux/actions/action";
@@ -16,7 +16,8 @@ import { Typography, TextField } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: blue["900"],
+    backgroundColor: grey[800],
+
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {

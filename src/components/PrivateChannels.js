@@ -7,7 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import { Card } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { blue } from "@mui/material/colors";
+// import { grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
@@ -23,7 +24,7 @@ import { fetchPrivateChannels } from "../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: blue["900"],
+    backgroundColor: grey[800],
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -172,7 +173,7 @@ function PrivateChannels() {
                       {convertDate(item.created)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.lastUpdated ? convertDate(item.lastUpdated) : 'N/A'}
+                      {item.lastUpdated ? convertDate(item.lastUpdated) : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}
