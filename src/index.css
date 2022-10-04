@@ -82,16 +82,3 @@ code {
   > .pro-icon-wrapper {
   background-color: transparent !important;
 }
-
-.react-slidedown .pro-inner-list-item {
-  background-color: #44003d;
-}
-
-.pro-sidebar.collapsed
-  .pro-menu
-  > ul
-  > .pro-menu-item.pro-sub-menu
-  > .pro-inner-list-item
-  > .popper-inner {
-  background-color: #44003d;
-}

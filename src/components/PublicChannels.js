@@ -22,7 +22,7 @@ import { fetchPubblicChannels } from "../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: grey[800],
+    backgroundColor: "rgb(80, 7, 80)",
 
     color: theme.palette.common.white,
   },
