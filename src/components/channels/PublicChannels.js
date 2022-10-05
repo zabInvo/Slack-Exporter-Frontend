@@ -12,6 +12,7 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import LinearProgress from "@mui/material/LinearProgress";
 import _ from "lodash";
 import moment from "moment";
 
@@ -187,16 +188,24 @@ function PublicChannels() {
                         : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {" "}
-                      <Button
-                        color="success"
-                        size="small"
-                        onClick={() => {
-                          syncHistroyData(item);
-                        }}
-                      >
-                        Sync Histroy
-                      </Button>
+                      {item.status === "Pending" ? (
+                        <>
+                          <Button color="error" size="small">
+                            Pending
+                          </Button>
+                          <LinearProgress color="error" />
+                        </>
+                      ) : (
+                        <Button
+                          color="success"
+                          size="small"
+                          onClick={() => {
+                            syncHistroyData(item);
+                          }}
+                        >
+                          Sync Histroy
+                        </Button>
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

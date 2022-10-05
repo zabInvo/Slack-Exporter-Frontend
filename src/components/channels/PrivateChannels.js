@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import LinearProgress from "@mui/material/LinearProgress";
 import Grid from "@mui/material/Grid";
 import _ from "lodash";
 import moment from "moment";
@@ -18,7 +19,10 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchPrivateChannels, syncChannelHistroy } from "../../redux/actions/action";
+import {
+  fetchPrivateChannels,
+  syncChannelHistroy,
+} from "../../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,8 +63,8 @@ function PrivateChannels() {
 
   const syncHistroyData = (item) => {
     const payload = {
-      channelId : item.slackId
-    }
+      channelId: item.slackId,
+    };
     dispatch(syncChannelHistroy(payload));
   };
 
@@ -191,16 +195,27 @@ function PrivateChannels() {
                         : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {" "}
-                      <Button
-                        color="success"
-                        size="small"
-                        onClick={() => {
-                          syncHistroyData(item);
-                        }}
-                      >
-                        Sync Histroy
-                      </Button>
+                      {item.status === "Pending" ? (
+                        <>
+                          <Button
+                            color="error"
+                            size="small"
+                          >
+                            Pending
+                          </Button>
+                          <LinearProgress color="error" />
+                        </>
+                      ) : (
+                        <Button
+                          color="success"
+                          size="small"
+                          onClick={() => {
+                            syncHistroyData(item);
+                          }}
+                        >
+                          Sync Histroy
+                        </Button>
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

@@ -32,7 +32,7 @@ export default function Login() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 20,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -45,6 +45,7 @@ export default function Login() {
           />
 
           <div
+            style={{marginTop:70}}
             onMouseEnter={handleButtonEnter}
             onMouseLeave={handleButtonLeave}
             onClick={handleButtonClick}
