@@ -30,7 +30,7 @@ const fetchPrivateChannels = (payload) => async (dispatch) => {
 const syncChannelHistroy = (payload) => async (dispatch) => {
   try {
     const syncResponse = await service.post("/sync-histroy", token, payload);
-    console.log('syncResponse',syncResponse);
+    console.log("syncResponse", syncResponse);
   } catch (error) {
     console.log(error);
   }
@@ -45,9 +45,19 @@ const fetchAuthedData = (payload) => async (dispatch) => {
   }
 };
 
+const updateMapping = (payload) => async () => {
+  try {
+    console.log(payload);
+    await service.post("/update-mapping", null, payload);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   fetchPubblicChannels,
   fetchPrivateChannels,
   syncChannelHistroy,
   fetchAuthedData,
+  updateMapping,
 };

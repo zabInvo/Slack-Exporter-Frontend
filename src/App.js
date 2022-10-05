@@ -27,10 +27,6 @@ function App() {
     console.log(user);
   }, [user]);
 
-  const LoginRedirect = () => {
-    console.log(123);
-  };
-
   return (
     <>
       <Routes>
