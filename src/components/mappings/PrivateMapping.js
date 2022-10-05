@@ -8,11 +8,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import { Button } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPrivateChannels } from "../redux/actions/action";
 import { Typography, TextField } from "@mui/material";
+import _ from "lodash";
+
+import { fetchPrivateChannels } from "../../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,12 +53,20 @@ export default function PrivateMapping() {
   );
 
   useEffect(() => {
-    dispatch(fetchPrivateChannels());
-  }, [dispatch]);
+    dispatchApi();
+  }, []);
 
   useEffect(() => {
     setChannels(publicGroups);
   }, [publicGroups]);
+
+  const dispatchApi = _.throttle(
+    function () {
+      dispatch(fetchPrivateChannels());
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
 
   return (
     <>
@@ -99,10 +108,16 @@ export default function PrivateMapping() {
             <TableBody>
               {filteredItems?.map((row, indx) => (
                 <StyledTableRow key={row.name}>
-                  <StyledTableCell component="th" scope="row">
+                  <StyledTableCell
+                    component="th"
+                    scope="row"
+                    style={{ fontWeight: "bold" }}
+                  >
                     {row.name}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{row.id}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.slackId}
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     <Input placeholder="Enter Channel Name" />
                   </StyledTableCell>

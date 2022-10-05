@@ -178,6 +178,7 @@ export default function Layout({ user }) {
             src="https://www.pngkey.com/png/full/984-9844126_slack-new-slack-logo-png.png"
             width={"40px"}
             style={{ marginLeft: "6px" }}
+            alt="N/A"
           />
           {!open ? (
             <>

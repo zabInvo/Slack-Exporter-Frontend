@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
@@ -14,11 +13,12 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import _ from "lodash";
+import moment from "moment";
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchPubblicChannels } from "../redux/actions/action";
+import { fetchPubblicChannels } from "../../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -51,12 +51,20 @@ function PublicChannels() {
   );
 
   useEffect(() => {
-    dispatch(fetchPubblicChannels());
+    dispatchApi();
   }, []);
 
   useEffect(() => {
     setChannels(publicGroups);
   }, [publicGroups]);
+
+  const dispatchApi = _.throttle(
+    function () {
+      dispatch(fetchPubblicChannels());
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
 
   const syncHistroyData = (item) => {};
 
@@ -164,15 +172,19 @@ function PublicChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{item.id}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.num_members}
+                      {item.slackId}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {convertDate(item.created)}
+                      {item.membersCount}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.lastUpdated ? convertDate(item.lastUpdated) : "N/A"}
+                      {convertDate(item.creationDate)}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.lastUpdatedAt
+                        ? moment(item.lastUpdatedAt).format("LLL")
+                        : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}

@@ -4,10 +4,10 @@ import { Routes, Route } from "react-router-dom";
 // Components
 import Layout from "./components/Layout";
 import Login from "./components/Login";
-import PublicChannels from "./components/PublicChannels";
-import PrivateChannels from "./components/PrivateChannels";
-import PrivateMapping from "./components/PrivateMapping";
-import PublicMapping from "./components/PublicMapping";
+import PublicChannels from "./components/channels/PublicChannels";
+import PrivateChannels from "./components/channels/PrivateChannels";
+import PrivateMapping from "./components/mappings/PrivateMapping";
+import PublicMapping from "./components/mappings/PublicMapping";
 import { useEffect } from "react";
 import { fetchAuthedData } from "./redux/actions/action";
 import { useDispatch, useSelector } from "react-redux";

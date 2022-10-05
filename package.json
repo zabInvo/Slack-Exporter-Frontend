@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.27.2",
     "loadash": "^1.0.0",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-pro-sidebar": "^0.7.1",

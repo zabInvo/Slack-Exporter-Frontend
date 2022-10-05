@@ -4,11 +4,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import { Card } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-// import { grey } from "@mui/material/colors";
-import { grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
@@ -16,11 +13,12 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import _ from "lodash";
+import moment from "moment";
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchPrivateChannels } from "../redux/actions/action";
+import { fetchPrivateChannels } from "../../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,7 +50,7 @@ function PrivateChannels() {
   );
 
   useEffect(() => {
-    dispatch(fetchPrivateChannels());
+    dispatchApi();
   }, []);
 
   useEffect(() => {
@@ -60,6 +58,14 @@ function PrivateChannels() {
   }, [privateGroups]);
 
   const syncHistroyData = (item) => {};
+
+  const dispatchApi = _.throttle(
+    function () {
+      dispatch(fetchPrivateChannels());
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
 
   const filteredItems = channels.filter((item) => {
     return (
@@ -154,7 +160,7 @@ function PrivateChannels() {
                 <StyledTableCell align="center">Edit</StyledTableCell>
               </TableRow>
             </TableHead>
-            {channels.length !== 0 ? (
+            {filteredItems.length !== 0 ? (
               <TableBody>
                 {filteredItems.map((item, index) => (
                   <StyledTableRow key={index}>
@@ -165,15 +171,19 @@ function PrivateChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{item.id}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.num_members}
+                      {item.slackId}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {convertDate(item.created)}
+                      {item.membersCount}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.lastUpdated ? convertDate(item.lastUpdated) : "N/A"}
+                      {convertDate(item.creationDate)}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.lastUpdatedAt
+                        ? moment(item.lastUpdatedAt).format("LLL")
+                        : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {" "}
