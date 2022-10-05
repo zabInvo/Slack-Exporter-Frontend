@@ -29,11 +29,29 @@ const fetchPrivateChannels = (payload) => async (dispatch) => {
 
 const syncChannelHistroy = (payload) => async (dispatch) => {
   try {
-    const companies = await service.post("company/getCompanies", token, payload);
+    const companies = await service.post(
+      "company/getCompanies",
+      token,
+      payload
+    );
     dispatch({ type: "SET_PRIVATE_CHANNELS", payload: companies.data.data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export { fetchPubblicChannels, fetchPrivateChannels, syncChannelHistroy };
+const fetchAuthedData = (payload) => async (dispatch) => {
+  try {
+    const userData = await service.get("/login/success");
+    dispatch({ type: "SET_USER", payload: userData });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  fetchPubblicChannels,
+  fetchPrivateChannels,
+  syncChannelHistroy,
+  fetchAuthedData,
+};

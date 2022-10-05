@@ -12,6 +12,13 @@ const service = {
     });
     return instance.post(baseUrl + endpoint, payload);
   },
+  get: (endpoint) => {
+    const instance = axios.create({
+      baseURL: baseUrl,
+      withCredentials: true,
+    });
+    return instance.get(baseUrl + endpoint);
+  },
 };
 
 export default service;

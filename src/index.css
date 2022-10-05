@@ -82,3 +82,53 @@ code {
   > .pro-icon-wrapper {
   background-color: transparent !important;
 }
+
+.slack-white-1 {
+  transition: 0.2s;
+  align-items: center;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: inline-flex;
+  font-family: Lato, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  justify-content: center;
+  text-decoration: none;
+  width: 256px;
+}
+
+.slack-white-2 {
+  transition: 0.2s;
+  height: 20px;
+  width: 20px;
+  margin-right: 12px;
+}
+
+.slack-purple-1 {
+  transform: scale(0.9);
+  cursor: pointer;
+  transition: 0.2s;
+  align-items: center;
+  color: #fff;
+  background-color: #4a154b;
+  border: 0;
+  border-radius: 4px;
+  display: inline-flex;
+  font-family: Lato, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  justify-content: center;
+  text-decoration: none;
+  width: 256px;
+}
+
+.slack-purple-2 {
+  transition: 0.2s;
+  height: 20px;
+  width: 20px;
+  margin-right: 12px;
+}
