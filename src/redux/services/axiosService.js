@@ -6,6 +6,7 @@ const service = {
   post: (endpoint, token, payload) => {
     const instance = axios.create({
       baseURL: baseUrl,
+      withCredentials: true,
       headers: {
         token: token,
       },
