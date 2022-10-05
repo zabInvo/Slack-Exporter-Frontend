@@ -29,12 +29,8 @@ const fetchPrivateChannels = (payload) => async (dispatch) => {
 
 const syncChannelHistroy = (payload) => async (dispatch) => {
   try {
-    const companies = await service.post(
-      "company/getCompanies",
-      token,
-      payload
-    );
-    dispatch({ type: "SET_PRIVATE_CHANNELS", payload: companies.data.data });
+    const syncResponse = await service.post("/sync-histroy", token, payload);
+    console.log('syncResponse',syncResponse);
   } catch (error) {
     console.log(error);
   }
