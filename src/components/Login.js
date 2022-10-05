@@ -23,7 +23,7 @@ export default function Login() {
   const handleButtonEnter = () => setHover(true);
   const handleButtonLeave = () => setHover(false);
   const handleButtonClick = () => {
-    window.open("http://localhost:5000/auth/slack", "_self");
+    window.open("https://localhost:5000/auth/slack", "_self");
   };
 
   return (

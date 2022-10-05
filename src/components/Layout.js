@@ -72,7 +72,12 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Layout() {
+export default function Layout({ user }) {
+  const handleLogout = async () => {
+    console.log("i ran");
+    window.open("https://localhost:5000/api/logout", "_self");
+  };
+
   const [channels, setChannels] = useState(false);
   const [mappings, setMappings] = useState(false);
   const [open, setOpen] = useState(false);
@@ -140,8 +145,24 @@ export default function Layout() {
       <CssBaseline />
       <div
         className="navbar cover alignment"
-        style={{ background: "rgb(64 14 64)" }}
-      ></div>
+        style={{
+          background: "rgb(64 14 64)",
+          display: "flex",
+          paddingRight: "24px",
+          flexDirection: "row-reverse",
+        }}
+      >
+        <img
+          src={user?.userData?.data?.user?.user?.image_48}
+          style={{ borderRadius: "8px", marginLeft: "12px" }}
+        />
+        <div style={{ textAlign: "right" }}>
+          {user?.userData?.data?.user?.displayName}
+          <div style={{ fontSize: "12px" }}>
+            {user?.userData?.data?.user?.user?.email}
+          </div>
+        </div>
+      </div>
       <ProSidebar style={{ height: "100vh" }} collapsed={open}>
         <div
           style={{
@@ -205,14 +226,18 @@ export default function Layout() {
             </MenuItem>
           </SubMenu>
           <SubMenu title="Settings" icon={<SettingsIcon />}>
-            <MenuItem>General</MenuItem>
-            <MenuItem>Account</MenuItem>
-            <MenuItem>Prefrences</MenuItem>
+            <MenuItem>
+              <Link to="/general">General</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/account">Account</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/prefrences">Prefrences</Link>
+            </MenuItem>
           </SubMenu>
-          <MenuItem icon={<LogoutIcon />}>
-            <Link to={"/login"} style={{ color: "white" }}>
-              Logout
-            </Link>
+          <MenuItem icon={<LogoutIcon />} onClick={handleLogout}>
+            Logout
           </MenuItem>
         </Menu>
       </ProSidebar>

@@ -27,17 +27,34 @@ function App() {
     console.log(user);
   }, [user]);
 
+  const LoginRedirect = () => {
+    console.log(123);
+  };
+
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Layout />}>
-          <Route path="dashboard" element={<div>Under Construction. 🚧</div>} />
-          <Route path="public" element={<PublicChannels />} />
-          <Route path="private" element={<PrivateChannels />} />
-          <Route path="publicmap" element={<PublicMapping />} />
-          <Route path="privatemap" element={<PrivateMapping />} />
-        </Route>
+        {user?.userData?.data?.user?.displayName ? (
+          <Route path="/" element={<Layout user={user} />}>
+            <Route
+              path="dashboard"
+              element={<div>Under Construction. 🚧</div>}
+            />
+            <Route path="public" element={<PublicChannels />} />
+            <Route path="private" element={<PrivateChannels />} />
+            <Route path="publicmap" element={<PublicMapping />} />
+            <Route path="privatemap" element={<PrivateMapping />} />
+            <Route path="general" element={<div>Under Construction. 🚧</div>} />
+            <Route path="account" element={<div>Under Construction. 🚧</div>} />
+            <Route
+              path="prefrences"
+              element={<div>Under Construction. 🚧</div>}
+            />
+          </Route>
+        ) : (
+          <Route path="*" element={<Login user={user} />}></Route>
+        )}
       </Routes>
     </>
   );
