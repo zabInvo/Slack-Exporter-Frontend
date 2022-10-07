@@ -16,8 +16,9 @@ import Grid from "@mui/material/Grid";
 import _ from "lodash";
 import moment from "moment";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect , useContext} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import SocketContext from "../../socket";
 
 import {
   fetchPrivateChannels,
@@ -45,6 +46,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function PrivateChannels() {
+  const socket = useContext(SocketContext);
   const [filterText, setFilterText] = useState("");
   const [channels, setChannels] = useState([]);
   const [sorting, setSorting] = useState("desc");
@@ -52,9 +54,16 @@ function PrivateChannels() {
   const privateGroups = useSelector((state) =>
     state.channelsReducers.private ? state.channelsReducers.private : []
   );
-
+  
   useEffect(() => {
     dispatchApi();
+  }, []);
+
+  useEffect(() => {
+    socket.on("lastUpdated", data => {
+      console.log("last Updated data : ",data);
+    });
+    return () => socket.off("lastUpdated");
   }, []);
 
   useEffect(() => {

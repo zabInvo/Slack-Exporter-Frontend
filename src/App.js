@@ -8,28 +8,30 @@ import PublicChannels from "./components/channels/PublicChannels";
 import PrivateChannels from "./components/channels/PrivateChannels";
 import PrivateMapping from "./components/mappings/PrivateMapping";
 import PublicMapping from "./components/mappings/PublicMapping";
-import { useEffect } from "react";
+import { useEffect , useContext} from "react";
 import { fetchAuthedData } from "./redux/actions/action";
 import { useDispatch, useSelector } from "react-redux";
+import SocketContext from "./socket";
+
 
 function App() {
   const dispatch = useDispatch();
+  const socket = useContext(SocketContext);
 
   const user = useSelector((state) =>
     state.authReducers ? state.authReducers : {}
   );
 
   useEffect(() => {
-    dispatch(fetchAuthedData());
-  }, [dispatch]);
+    socket.on("Connect", data => {
+      console.log("Client Connected : ",data);
+    });
+    return () => socket.off("Connect");
+  }, []);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  const LoginRedirect = () => {
-    console.log(123);
-  };
+    dispatch(fetchAuthedData());
+  }, [dispatch]);
 
   return (
     <>

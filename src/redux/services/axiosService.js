@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://localhost:5000/api";
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const service = {
   post: (endpoint, token, payload) => {
