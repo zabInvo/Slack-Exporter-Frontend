@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 // Components
 import Layout from "./components/Layout";
 import Login from "./components/Login";
+import Dashboard from "./components/dashboard";
 import PublicChannels from "./components/channels/PublicChannels";
 import PrivateChannels from "./components/channels/PrivateChannels";
 import PrivateMapping from "./components/mappings/PrivateMapping";
@@ -23,20 +24,13 @@ function App() {
     dispatch(fetchAuthedData());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
         {user?.userData?.data?.user?.displayName ? (
           <Route path="/" element={<Layout user={user} />}>
-            <Route
-              path="dashboard"
-              element={<div>Under Construction. 🚧</div>}
-            />
+            <Route path="dashboard" element={<Dashboard stats={``} />} />
             <Route path="public" element={<PublicChannels />} />
             <Route path="private" element={<PrivateChannels />} />
             <Route path="publicmap" element={<PublicMapping />} />

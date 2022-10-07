@@ -111,7 +111,7 @@ export default function PrivateMapping() {
           onChange={(e) => setFilterText(e.target.value)}
         />
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
+      <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
         <Table
           sx={{ minWidth: 700 }}
           aria-label="customized table"

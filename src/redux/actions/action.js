@@ -47,8 +47,16 @@ const fetchAuthedData = (payload) => async (dispatch) => {
 
 const updateMapping = (payload) => async () => {
   try {
-    console.log(payload);
     await service.post("/update-mapping", null, payload);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchDashboardEssentials = (payload) => async (dispatch) => {
+  try {
+    const data = await service.post("/fetch-all-message-info", null, payload);
+    dispatch({ type: "SET_INFO", payload: data });
   } catch (error) {
     console.log(error);
   }
@@ -60,4 +68,5 @@ export {
   syncChannelHistroy,
   fetchAuthedData,
   updateMapping,
+  fetchDashboardEssentials,
 };

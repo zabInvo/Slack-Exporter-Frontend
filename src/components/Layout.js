@@ -74,7 +74,6 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Layout({ user }) {
   const handleLogout = async () => {
-    console.log("i ran");
     window.open("https://localhost:5000/api/logout", "_self");
   };
 

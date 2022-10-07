@@ -59,7 +59,6 @@ export default function PublicMapping() {
   };
 
   const updateMap = (id, indx) => {
-    console.log(filteredItems);
     dispatch(
       updateMapping({
         mattermostName: filteredItems[indx].mattermostName,
@@ -111,7 +110,7 @@ export default function PublicMapping() {
           onChange={(e) => setFilterText(e.target.value)}
         />
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
+      <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
         <Table
           sx={{ minWidth: 700 }}
           aria-label="customized table"

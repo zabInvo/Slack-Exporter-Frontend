@@ -18,7 +18,10 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchPrivateChannels, syncChannelHistroy } from "../../redux/actions/action";
+import {
+  fetchPrivateChannels,
+  syncChannelHistroy,
+} from "../../redux/actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,8 +62,8 @@ function PrivateChannels() {
 
   const syncHistroyData = (item) => {
     const payload = {
-      channelId : item.slackId
-    }
+      channelId: item.slackId,
+    };
     dispatch(syncChannelHistroy(payload));
   };
 
@@ -128,7 +131,7 @@ function PrivateChannels() {
         <TableContainer
           component={Paper}
           sx={{ mt: 5 }}
-          style={{ maxHeight: "600px" }}
+          style={{ maxHeight: "450px" }}
         >
           <Table
             sx={{ minWidth: 700 }}
