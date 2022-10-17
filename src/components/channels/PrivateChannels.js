@@ -132,7 +132,7 @@ function PrivateChannels() {
         <TableContainer
           component={Paper}
           sx={{ mt: 5 }}
-          style={{ maxHeight: "600px" }}
+          style={{ maxHeight: "450px" }}
         >
           <Table
             sx={{ minWidth: 700 }}

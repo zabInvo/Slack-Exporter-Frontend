@@ -11,6 +11,10 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextField } from "@mui/material";
+import { updateMapping } from "../../redux/actions/action";
+import { LoadingButton } from "@mui/lab";
+import { Snackbar } from "@mui/material";
+
 import Typography from "@mui/material/Typography";
 import _ from "lodash";
 
@@ -37,15 +41,36 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function PublicMapping() {
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState(false);
+  const [message, setMessage] = useState("");
   const [channels, setChannels] = useState([]);
   const [filterText, setFilterText] = useState("");
-  const filteredItems = channels.filter((item) => {
+  const filteredItems = channels?.filter((item) => {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
       (item.id && item.id.toLowerCase().includes(filterText.toLowerCase()))
     );
   });
+
+  const handleClose = (event, reason) => {
+    setNotification(false);
+  };
+
+  const updateMap = (id, indx) => {
+    dispatch(
+      updateMapping({
+        mattermostName: filteredItems[indx].mattermostName,
+        forwardUrl: filteredItems[indx].forwardUrl,
+        id,
+      })
+    ).then(() => {
+      setLoading(false);
+      setNotification(true);
+      setMessage("Updated " + filteredItems[indx].name);
+    });
+  };
 
   const dispatch = useDispatch();
   const publicGroups = useSelector((state) =>
@@ -71,6 +96,12 @@ export default function PublicMapping() {
   return (
     <>
       <div style={{ textAlign: "center" }}>
+        <Snackbar
+          open={notification}
+          message={message}
+          autoHideDuration={1500}
+          onClose={handleClose}
+        />
         <Typography variant="h4">Public Mappings</Typography>
         <TextField
           label="Search"
@@ -79,7 +110,7 @@ export default function PublicMapping() {
           onChange={(e) => setFilterText(e.target.value)}
         />
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
+      <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
         <Table
           sx={{ minWidth: 700 }}
           aria-label="customized table"
@@ -119,19 +150,38 @@ export default function PublicMapping() {
                     {row.slackId}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Input placeholder="Enter Channel Name" />
+                    <Input
+                      placeholder="Enter Channel Name"
+                      key={row.slackId}
+                      defaultValue={row.mattermostName}
+                      onChange={(e) => {
+                        filteredItems[indx].mattermostName = e.target.value;
+                      }}
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Input placeholder="Enter URL" />
+                    <Input
+                      placeholder="Enter URL"
+                      key={row.slackId}
+                      defaultValue={row.forwardUrl}
+                      onChange={(e) => {
+                        filteredItems[indx].forwardUrl = e.target.value;
+                      }}
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Button
-                      key={indx}
+                    <LoadingButton
+                      loading={loading}
+                      key={row.slackId}
                       variant="contained"
                       style={{ margin: "4px" }}
+                      onClick={() => {
+                        setLoading(true);
+                        updateMap(row.slackId, indx);
+                      }}
                     >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
