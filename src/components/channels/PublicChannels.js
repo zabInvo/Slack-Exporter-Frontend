@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import _ from "lodash";
 import moment from "moment";
+import { syncChannelHistroy } from "../../redux/actions/action";
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,7 +67,12 @@ function PublicChannels() {
     { leading: true, trailing: false }
   );
 
-  const syncHistroyData = (item) => {};
+  const syncHistroyData = (item) => {
+    const payload = {
+      channelId: item.slackId,
+    };
+    dispatch(syncChannelHistroy(payload));
+  };
 
   const filteredItems = channels.filter((item) => {
     return (

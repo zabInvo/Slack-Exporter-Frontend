@@ -1,25 +1,17 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PublicIcon from "@mui/icons-material/Public";
 import { Outlet, useNavigate } from "react-router-dom";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { Button } from "@mui/material";
 import "../index.css";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -72,7 +64,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Layout({ user }) {
+export default function Layout({ user, liftOpen }) {
   const handleLogout = async () => {
     window.open("https://localhost:5000/api/logout", "_self");
   };
@@ -80,6 +72,11 @@ export default function Layout({ user }) {
   const [channels, setChannels] = useState(false);
   const [mappings, setMappings] = useState(false);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    liftOpen();
+  }, [open]);
+
   const navigate = useNavigate();
   const toggleDrawer = () => {
     if (open) {

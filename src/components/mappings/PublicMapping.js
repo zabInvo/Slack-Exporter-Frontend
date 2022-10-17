@@ -46,7 +46,7 @@ export default function PublicMapping() {
   const [message, setMessage] = useState("");
   const [channels, setChannels] = useState([]);
   const [filterText, setFilterText] = useState("");
-  const filteredItems = channels.filter((item) => {
+  const filteredItems = channels?.filter((item) => {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
