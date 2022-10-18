@@ -13,7 +13,6 @@ import PublicMapping from "./components/mappings/PublicMapping";
 import { useEffect } from "react";
 import { fetchAuthedData } from "./redux/actions/action";
 import { useDispatch, useSelector } from "react-redux";
-import Dashboard from "../src/components/dashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,10 +30,6 @@ function App() {
     dispatch(fetchAuthedData());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   return (
     <>
       <Routes>
@@ -46,12 +41,6 @@ function App() {
             <Route path="private" element={<PrivateChannels />} />
             <Route path="publicmap" element={<PublicMapping />} />
             <Route path="privatemap" element={<PrivateMapping />} />
-            <Route path="general" element={<div>Under Construction. 🚧</div>} />
-            <Route path="account" element={<div>Under Construction. 🚧</div>} />
-            <Route
-              path="prefrences"
-              element={<div>Under Construction. 🚧</div>}
-            />
           </Route>
         ) : (
           <Route path="*" element={<Login user={user} />}></Route>

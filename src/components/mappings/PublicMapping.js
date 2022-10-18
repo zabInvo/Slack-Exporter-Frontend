@@ -82,7 +82,7 @@ export default function PublicMapping() {
   }, [dispatch]);
 
   useEffect(() => {
-    setChannels(publicGroups);
+    setChannels(publicGroups?.channels);
   }, [publicGroups]);
 
   const dispatchApi = _.throttle(
@@ -110,7 +110,7 @@ export default function PublicMapping() {
           onChange={(e) => setFilterText(e.target.value)}
         />
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
+      <TableContainer component={Paper} style={{ maxHeight: "385px" }}>
         <Table
           sx={{ minWidth: 700 }}
           aria-label="customized table"
@@ -137,54 +137,57 @@ export default function PublicMapping() {
           </TableHead>
           {filteredItems?.length !== 0 ? (
             <TableBody>
-              {filteredItems?.map((row, indx) => (
-                <StyledTableRow key={row.name}>
-                  <StyledTableCell
-                    component="th"
-                    scope="row"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    {row.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.slackId}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Input
-                      placeholder="Enter Channel Name"
-                      key={row.slackId}
-                      defaultValue={row.mattermostName}
-                      onChange={(e) => {
-                        filteredItems[indx].mattermostName = e.target.value;
-                      }}
-                    />
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Input
-                      placeholder="Enter URL"
-                      key={row.slackId}
-                      defaultValue={row.forwardUrl}
-                      onChange={(e) => {
-                        filteredItems[indx].forwardUrl = e.target.value;
-                      }}
-                    />
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <LoadingButton
-                      loading={loading}
-                      key={row.slackId}
-                      variant="contained"
-                      style={{ margin: "4px" }}
-                      onClick={() => {
-                        setLoading(true);
-                        updateMap(row.slackId, indx);
-                      }}
-                    >
-                      Submit
-                    </LoadingButton>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
+              {filteredItems?.map(
+                (row, indx) => (
+                  console.log(row),
+                  (
+                    <StyledTableRow key={row.name}>
+                      <StyledTableCell
+                        component="th"
+                        scope="row"
+                        style={{ fontWeight: "bold" }}
+                      >
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">{row.id}</StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Input
+                          placeholder="Enter Channel Name"
+                          key={row.id}
+                          defaultValue={row.mattermostName}
+                          onChange={(e) => {
+                            filteredItems[indx].mattermostName = e.target.value;
+                          }}
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Input
+                          placeholder="Enter URL"
+                          key={row.id}
+                          defaultValue={row.forwardUrl}
+                          onChange={(e) => {
+                            filteredItems[indx].forwardUrl = e.target.value;
+                          }}
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <LoadingButton
+                          loading={loading}
+                          key={row.id}
+                          variant="contained"
+                          style={{ margin: "4px" }}
+                          onClick={() => {
+                            setLoading(true);
+                            updateMap(row.id, indx);
+                          }}
+                        >
+                          Submit
+                        </LoadingButton>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  )
+                )
+              )}
             </TableBody>
           ) : (
             <div

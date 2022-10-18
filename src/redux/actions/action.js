@@ -47,6 +47,7 @@ const fetchAuthedData = (payload) => async (dispatch) => {
 
 const updateMapping = (payload) => async () => {
   try {
+    console.log("update-mapping", payload);
     await service.post("/update-mapping", null, payload);
   } catch (error) {
     console.log(error);

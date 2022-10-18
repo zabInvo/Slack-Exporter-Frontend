@@ -56,7 +56,7 @@ function PublicChannels() {
   }, []);
 
   useEffect(() => {
-    setChannels(publicGroups);
+    setChannels(publicGroups.channels);
   }, [publicGroups]);
 
   const dispatchApi = _.throttle(
@@ -69,12 +69,12 @@ function PublicChannels() {
 
   const syncHistroyData = (item) => {
     const payload = {
-      channelId: item.slackId,
+      channelId: item.id,
     };
     dispatch(syncChannelHistroy(payload));
   };
 
-  const filteredItems = channels.filter((item) => {
+  const filteredItems = channels?.filter((item) => {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
@@ -130,7 +130,7 @@ function PublicChannels() {
         <TableContainer
           component={Paper}
           sx={{ mt: 3 }}
-          style={{ maxHeight: "450px" }}
+          style={{ maxHeight: "385px" }}
         >
           <Table
             sx={{ minWidth: 700 }}
@@ -167,9 +167,9 @@ function PublicChannels() {
                 <StyledTableCell align="center">Edit</StyledTableCell>
               </TableRow>
             </TableHead>
-            {channels.length !== 0 ? (
+            {channels?.length !== 0 ? (
               <TableBody>
-                {filteredItems.map((item, index) => (
+                {filteredItems?.map((item, index) => (
                   <StyledTableRow key={index}>
                     <StyledTableCell
                       component="th"
@@ -178,14 +178,12 @@ function PublicChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
+                    <StyledTableCell align="center">{item.id}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.slackId}
+                      {item.num_members}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.membersCount}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {convertDate(item.creationDate)}
+                      {convertDate(item.created)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {item.lastUpdatedAt

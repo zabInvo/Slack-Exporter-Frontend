@@ -7,7 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
-import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextField } from "@mui/material";
@@ -46,7 +45,7 @@ export default function PrivateMapping() {
   const [message, setMessage] = useState("");
   const [channels, setChannels] = useState([]);
   const [filterText, setFilterText] = useState("");
-  const filteredItems = channels.filter((item) => {
+  const filteredItems = channels?.filter((item) => {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
@@ -59,7 +58,6 @@ export default function PrivateMapping() {
   };
 
   const updateMap = (id, indx) => {
-    console.log(filteredItems);
     dispatch(
       updateMapping({
         mattermostName: filteredItems[indx].mattermostName,
@@ -83,7 +81,7 @@ export default function PrivateMapping() {
   }, [dispatch]);
 
   useEffect(() => {
-    setChannels(privateGroups);
+    setChannels(privateGroups?.channels);
   }, [privateGroups]);
 
   const dispatchApi = _.throttle(
@@ -111,7 +109,7 @@ export default function PrivateMapping() {
           onChange={(e) => setFilterText(e.target.value)}
         />
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
+      <TableContainer component={Paper} style={{ maxHeight: "385px" }}>
         <Table
           sx={{ minWidth: 700 }}
           aria-label="customized table"
@@ -147,13 +145,11 @@ export default function PrivateMapping() {
                   >
                     {row.name}
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.slackId}
-                  </StyledTableCell>
+                  <StyledTableCell align="center">{row.id}</StyledTableCell>
                   <StyledTableCell align="center">
                     <Input
                       placeholder="Enter Channel Name"
-                      key={row.slackId}
+                      key={row.id}
                       defaultValue={row.mattermostName}
                       onChange={(e) => {
                         filteredItems[indx].mattermostName = e.target.value;
@@ -163,7 +159,7 @@ export default function PrivateMapping() {
                   <StyledTableCell align="center">
                     <Input
                       placeholder="Enter URL"
-                      key={row.slackId}
+                      key={row.id}
                       defaultValue={row.forwardUrl}
                       onChange={(e) => {
                         filteredItems[indx].forwardUrl = e.target.value;
@@ -173,12 +169,12 @@ export default function PrivateMapping() {
                   <StyledTableCell align="center">
                     <LoadingButton
                       loading={loading}
-                      key={row.slackId}
+                      key={row.id}
                       variant="contained"
                       style={{ margin: "4px" }}
                       onClick={() => {
                         setLoading(true);
-                        updateMap(row.slackId, indx);
+                        updateMap(row.id, indx);
                       }}
                     >
                       Submit

@@ -57,7 +57,7 @@ function PrivateChannels() {
   }, []);
 
   useEffect(() => {
-    setChannels(privateGroups);
+    setChannels(privateGroups?.channels);
   }, [privateGroups]);
 
   const syncHistroyData = (item) => {
@@ -75,7 +75,7 @@ function PrivateChannels() {
     { leading: true, trailing: false }
   );
 
-  const filteredItems = channels.filter((item) => {
+  const filteredItems = channels?.filter((item) => {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
@@ -131,7 +131,7 @@ function PrivateChannels() {
         <TableContainer
           component={Paper}
           sx={{ mt: 5 }}
-          style={{ maxHeight: "450px" }}
+          style={{ maxHeight: "385px" }}
         >
           <Table
             sx={{ minWidth: 700 }}
@@ -168,9 +168,9 @@ function PrivateChannels() {
                 <StyledTableCell align="center">Edit</StyledTableCell>
               </TableRow>
             </TableHead>
-            {filteredItems.length !== 0 ? (
+            {filteredItems?.length !== 0 ? (
               <TableBody>
-                {filteredItems.map((item, index) => (
+                {filteredItems?.map((item, index) => (
                   <StyledTableRow key={index}>
                     <StyledTableCell
                       component="th"
@@ -179,14 +179,12 @@ function PrivateChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
+                    <StyledTableCell align="center">{item.id}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.slackId}
+                      {item.num_members ? item.num_members : "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.membersCount}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {convertDate(item.creationDate)}
+                      {convertDate(item.created)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {item.lastUpdatedAt
