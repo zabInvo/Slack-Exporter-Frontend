@@ -125,7 +125,7 @@ function PublicChannels() {
         <TableContainer
           component={Paper}
           sx={{ mt: 3 }}
-          style={{ maxHeight: "600px" }}
+          style={{ maxHeight: "350px" }}
         >
           <Table
             sx={{ minWidth: 700 }}

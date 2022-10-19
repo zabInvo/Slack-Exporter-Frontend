@@ -16,7 +16,7 @@ import Grid from "@mui/material/Grid";
 import _ from "lodash";
 import moment from "moment";
 
-import { useState, useEffect , useContext} from "react";
+import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SocketContext from "../../socket";
 
@@ -54,14 +54,14 @@ function PrivateChannels() {
   const privateGroups = useSelector((state) =>
     state.channelsReducers.private ? state.channelsReducers.private : []
   );
-  
+
   useEffect(() => {
     dispatchApi();
   }, []);
 
   useEffect(() => {
-    socket.on("lastUpdated", data => {
-      console.log("last Updated data : ",data);
+    socket.on("lastUpdated", (data) => {
+      console.log("last Updated data : ", data);
     });
     return () => socket.off("lastUpdated");
   }, []);
@@ -141,7 +141,7 @@ function PrivateChannels() {
         <TableContainer
           component={Paper}
           sx={{ mt: 5 }}
-          style={{ maxHeight: "600px" }}
+          style={{ maxHeight: "350px" }}
         >
           <Table
             sx={{ minWidth: 700 }}
@@ -206,10 +206,7 @@ function PrivateChannels() {
                     <StyledTableCell align="center">
                       {item.status === "Pending" ? (
                         <>
-                          <Button
-                            color="error"
-                            size="small"
-                          >
+                          <Button color="error" size="small">
                             Pending
                           </Button>
                           <LinearProgress color="error" />
