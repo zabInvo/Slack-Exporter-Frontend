@@ -110,7 +110,7 @@ export default function PublicMapping() {
           onChange={(e) => setFilterText(e.target.value)}
         />
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: "385px" }}>
+      <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
         <Table
           sx={{ minWidth: 700 }}
           aria-label="customized table"
