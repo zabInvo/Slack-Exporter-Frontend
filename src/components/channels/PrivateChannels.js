@@ -57,7 +57,7 @@ function PrivateChannels() {
   }, []);
 
   useEffect(() => {
-    setChannels(privateGroups?.channels);
+    setChannels(privateGroups);
   }, [privateGroups]);
 
   const syncHistroyData = (item) => {
@@ -79,7 +79,8 @@ function PrivateChannels() {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
-      (item.id && item.id.toLowerCase().includes(filterText.toLowerCase()))
+      (item.slackId &&
+        item.slackId.toLowerCase().includes(filterText.toLowerCase()))
     );
   });
 
@@ -179,12 +180,14 @@ function PrivateChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{item.id}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.num_members ? item.num_members : "N/A"}
+                      {item.slackId}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {convertDate(item.created)}
+                      {item.membersCount ? item.membersCount : "N/A"}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {convertDate(item.creationDate)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {item.lastUpdatedAt

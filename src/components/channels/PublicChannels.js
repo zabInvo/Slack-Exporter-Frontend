@@ -56,7 +56,7 @@ function PublicChannels() {
   }, []);
 
   useEffect(() => {
-    setChannels(publicGroups.channels);
+    setChannels(publicGroups);
   }, [publicGroups]);
 
   const dispatchApi = _.throttle(
@@ -69,7 +69,7 @@ function PublicChannels() {
 
   const syncHistroyData = (item) => {
     const payload = {
-      channelId: item.id,
+      channelId: item.slackId,
     };
     dispatch(syncChannelHistroy(payload));
   };
@@ -78,9 +78,14 @@ function PublicChannels() {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
-      (item.id && item.id.toLowerCase().includes(filterText.toLowerCase()))
+      (item.slackId &&
+        item.slackId.toLowerCase().includes(filterText.toLowerCase()))
     );
   });
+
+  useEffect(() => {
+    console.log(channels);
+  }, [channels]);
 
   const convertDate = (unixTimestamp) => {
     let date = new Date(unixTimestamp * 1000);
@@ -178,12 +183,14 @@ function PublicChannels() {
                     >
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{item.id}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.num_members}
+                      {item.slackId}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {convertDate(item.created)}
+                      {item.membersCount}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {convertDate(item.creationDate)}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {item.lastUpdatedAt

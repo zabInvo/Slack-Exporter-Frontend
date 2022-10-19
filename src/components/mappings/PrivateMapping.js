@@ -49,7 +49,8 @@ export default function PrivateMapping() {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
-      (item.id && item.id.toLowerCase().includes(filterText.toLowerCase()))
+      (item.slackId &&
+        item.slackId.toLowerCase().includes(filterText.toLowerCase()))
     );
   });
 
@@ -81,7 +82,7 @@ export default function PrivateMapping() {
   }, [dispatch]);
 
   useEffect(() => {
-    setChannels(privateGroups?.channels);
+    setChannels(privateGroups);
   }, [privateGroups]);
 
   const dispatchApi = _.throttle(
@@ -145,11 +146,13 @@ export default function PrivateMapping() {
                   >
                     {row.name}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{row.id}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.slackId}
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     <Input
                       placeholder="Enter Channel Name"
-                      key={row.id}
+                      key={row.slackId}
                       defaultValue={row.mattermostName}
                       onChange={(e) => {
                         filteredItems[indx].mattermostName = e.target.value;
@@ -159,7 +162,7 @@ export default function PrivateMapping() {
                   <StyledTableCell align="center">
                     <Input
                       placeholder="Enter URL"
-                      key={row.id}
+                      key={row.slackId}
                       defaultValue={row.forwardUrl}
                       onChange={(e) => {
                         filteredItems[indx].forwardUrl = e.target.value;
@@ -169,12 +172,12 @@ export default function PrivateMapping() {
                   <StyledTableCell align="center">
                     <LoadingButton
                       loading={loading}
-                      key={row.id}
+                      key={row.slackId}
                       variant="contained"
                       style={{ margin: "4px" }}
                       onClick={() => {
                         setLoading(true);
-                        updateMap(row.id, indx);
+                        updateMap(row.slackId, indx);
                       }}
                     >
                       Submit
