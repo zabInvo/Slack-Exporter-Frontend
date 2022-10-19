@@ -130,6 +130,7 @@ const Dashboard = ({ open }) => {
             style={{
               boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
               backgroundColor: "white",
+              width: "45%",
             }}
           >
             <div
@@ -179,6 +180,7 @@ const Dashboard = ({ open }) => {
             style={{
               boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
               backgroundColor: "white",
+              width: "45%",
             }}
           >
             <div
