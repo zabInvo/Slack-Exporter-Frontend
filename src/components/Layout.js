@@ -226,17 +226,6 @@ export default function Layout({ user }) {
               <Link to={"/publicmap"}>Public mappinng</Link>
             </MenuItem>
           </SubMenu>
-          <SubMenu title="Settings" icon={<SettingsIcon />}>
-            <MenuItem>
-              <Link to="/general">General</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/account">Account</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/prefrences">Prefrences</Link>
-            </MenuItem>
-          </SubMenu>
           <MenuItem icon={<LogoutIcon />} onClick={handleLogout}>
             Logout
           </MenuItem>

@@ -7,10 +7,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
-import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Typography, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
+import { updateMapping } from "../../redux/actions/action";
+import { LoadingButton } from "@mui/lab";
+import { Snackbar } from "@mui/material";
+
+import Typography from "@mui/material/Typography";
 import _ from "lodash";
 
 import { fetchPrivateChannels } from "../../redux/actions/action";
@@ -18,7 +22,6 @@ import { fetchPrivateChannels } from "../../redux/actions/action";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "rgb(80, 7, 80)",
-
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -37,28 +40,50 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function PrivateMapping() {
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState(false);
+  const [message, setMessage] = useState("");
   const [channels, setChannels] = useState([]);
   const [filterText, setFilterText] = useState("");
-  const filteredItems = channels.filter((item) => {
+  const filteredItems = channels?.filter((item) => {
     return (
       (item.name &&
         item.name.toLowerCase().includes(filterText.toLowerCase())) ||
-      (item.id && item.id.toLowerCase().includes(filterText.toLowerCase()))
+      (item.slackId &&
+        item.slackId.toLowerCase().includes(filterText.toLowerCase()))
     );
   });
 
+  const handleClose = (event, reason) => {
+    setNotification(false);
+  };
+
+  const updateMap = (id, indx) => {
+    dispatch(
+      updateMapping({
+        mattermostName: filteredItems[indx].mattermostName,
+        forwardUrl: filteredItems[indx].forwardUrl,
+        id,
+      })
+    ).then(() => {
+      setLoading(false);
+      setNotification(true);
+      setMessage("Updated " + filteredItems[indx].name);
+    });
+  };
+
   const dispatch = useDispatch();
-  const publicGroups = useSelector((state) =>
+  const privateGroups = useSelector((state) =>
     state.channelsReducers.private ? state.channelsReducers.private : []
   );
 
   useEffect(() => {
     dispatchApi();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    setChannels(publicGroups);
-  }, [publicGroups]);
+    setChannels(privateGroups);
+  }, [privateGroups]);
 
   const dispatchApi = _.throttle(
     function () {
@@ -71,6 +96,12 @@ export default function PrivateMapping() {
   return (
     <>
       <div style={{ textAlign: "center" }}>
+        <Snackbar
+          open={notification}
+          message={message}
+          autoHideDuration={1500}
+          onClose={handleClose}
+        />
         <Typography variant="h4">Private Mappings</Typography>
         <TextField
           label="Search"
@@ -79,7 +110,7 @@ export default function PrivateMapping() {
           onChange={(e) => setFilterText(e.target.value)}
         />
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: "600px" }}>
+      <TableContainer component={Paper} style={{ maxHeight: "385px" }}>
         <Table
           sx={{ minWidth: 700 }}
           aria-label="customized table"
@@ -119,19 +150,38 @@ export default function PrivateMapping() {
                     {row.slackId}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Input placeholder="Enter Channel Name" />
+                    <Input
+                      placeholder="Enter Channel Name"
+                      key={row.slackId}
+                      defaultValue={row.mattermostName}
+                      onChange={(e) => {
+                        filteredItems[indx].mattermostName = e.target.value;
+                      }}
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Input placeholder="Enter URL" />
+                    <Input
+                      placeholder="Enter URL"
+                      key={row.slackId}
+                      defaultValue={row.forwardUrl}
+                      onChange={(e) => {
+                        filteredItems[indx].forwardUrl = e.target.value;
+                      }}
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Button
-                      key={indx}
+                    <LoadingButton
+                      loading={loading}
+                      key={row.slackId}
                       variant="contained"
                       style={{ margin: "4px" }}
+                      onClick={() => {
+                        setLoading(true);
+                        updateMap(row.slackId, indx);
+                      }}
                     >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}

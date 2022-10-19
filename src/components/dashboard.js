@@ -1,178 +1,432 @@
-import { Pie } from "react-chartjs-2";
-import { Line } from "react-chartjs-2";
-import { Typography } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
-import PersonIcon from "@mui/icons-material/Person";
-import ShortcutIcon from "@mui/icons-material/Shortcut";
 import { useDispatch, useSelector } from "react-redux";
-// import { fetchSlackStats } from "../redux/actions/action";
+import _ from "lodash";
+import { fetchPubblicChannels } from "../redux/actions/action";
+import { Select, MenuItem } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+} from "@mui/material";
 
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
-  ArcElement,
 } from "chart.js";
 import { useEffect, useState } from "react";
-
-const pieData = {
-  labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 206, 86, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-        "rgba(255, 159, 64, 0.2)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+import { Bar } from "react-chartjs-2";
+import { fetchPrivateChannels } from "../redux/actions/action";
+import TagIcon from "@mui/icons-material/Tag";
+import LockIcon from "@mui/icons-material/Lock";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend
 );
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(Tooltip, Legend);
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-  },
-};
-
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: labels.map(() => Math.random() * 500 - 250),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Dataset 2",
-      data: labels.map(() => Math.random() * 500 - 250),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
-
-export default function Dashboard() {
-  const [showModal, setShowModal] = useState(false);
-  const [channels, setChannels] = useState([]);
-  const [sorting, setSorting] = useState("desc");
+const Dashboard = ({ open }) => {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const [publicChannels, setPublicChannels] = useState();
+  const [privateChannels, setPrivateChannels] = useState();
+  const [allChannels, setAllChannels] = useState([]);
+  const [channels, setChannels] = useState("public");
 
-  const state = useSelector((state) => (state ? state : []));
+  const latestSync = (check) => {
+    let latestDate = 0;
+    let indx = 0;
+    for (let ix = 0; ix < check.length; ix++) {
+      let date = new Date(check[ix]?.lastUpdatedAt);
+      if (date) {
+        if (latestDate < date.getTime()) {
+          indx = ix;
+        }
+      }
+    }
+
+    return check[indx];
+  };
 
   useEffect(() => {
-    // dispatch(fetchSlackStats());
-  }, []);
+    dispatch(fetchPubblicChannels());
+    dispatch(fetchPrivateChannels());
+  }, [dispatch]);
 
+  useEffect(() => {
+    console.log(state?.channelsReducers?.public);
+    setPublicChannels(state?.channelsReducers?.public);
+    setPrivateChannels(state?.channelsReducers?.private);
+    setAllChannels([
+      ...state?.channelsReducers?.public,
+      ...state?.channelsReducers?.private,
+    ]);
+  }, [state]);
+
+  const publicGroups = useSelector((state) =>
+    state.channelsReducers.public ? state.channelsReducers.public : []
+  );
+
+  useEffect(() => {
+    setChannels(publicGroups);
+  }, [publicGroups]);
+
+  const handleChange = (event) => {
+    setChannels(event.target.value);
+  };
   return (
     <div
       style={{
         display: "flex",
-        alignItems: "start",
-        justifyContent: "space-evenly",
+        justifyContent: "space-around",
       }}
     >
-      <div style={{ width: "70%", boxShadow: "0 4px 30px #0000001a" }}>
-        <Line options={options} data={data} />
-        <div style={{ fontSize: "12px", padding: "12px" }}>
-          Channel Popularity
-        </div>
-      </div>
-      <section>
-        <div style={{ boxShadow: "0 4px 30px #0000001a" }}>
-          <Pie data={pieData} />
-          <div style={{ fontSize: "12px", padding: "12px" }}>
-            Channel Activity
-          </div>
-        </div>
+      <section style={{ width: "100%", margin: "12px" }}>
         <div
           style={{
-            marginTop: "18px",
-            padding: "4px",
-            boxShadow: "0 4px 30px #0000001a",
+            width: "90%",
+            margin: "auto",
+            boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
           }}
         >
-          <div></div>
+          <Bar
+            options={{ responsive: true }}
+            data={{
+              labels: ["Public", "Private"],
+              datasets: [
+                {
+                  label: "Channels",
+                  data: ["Public", "Private"].map((el, ix) =>
+                    ix === 0 ? publicChannels?.length : privateChannels?.length
+                  ),
+                  backgroundColor: "purple",
+                },
+              ],
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "start",
+            width: "90%",
+            margin: "auto",
+            marginTop: "8px",
+          }}
+        >
           <div
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+              backgroundColor: "white",
             }}
           >
-            <Avatar style={{ margin: "8px" }}>
-              <PersonIcon />
-            </Avatar>
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    color: "#595959",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Bilal Asghar
-                </div>
-                <ShortcutIcon style={{ color: "gray", marginLeft: "auto" }} />
-
-                <div
-                  style={{
-                    fontWeight: "normal",
-                    color: "gray",
-                  }}
-                >
-                  #general
-                </div>
-              </div>
-              <div style={{ color: "gray" }}>Assalam o alaikum everyone!</div>
+            <div
+              style={{
+                backgroundColor: "purple",
+                padding: "8px",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              🟢 Synced
             </div>
+            <List
+              sx={{
+                transition: "0.2s",
+                width: "100%",
+                minWidth: open ? 225 : 235,
+                maxWidth: open ? 225 : 235,
+                minHeight: open ? 210 : 230,
+                maxHeight: open ? 100 : 230,
+                paddingTop: 0,
+                overflowY: "auto",
+              }}
+            >
+              {allChannels?.map((el) =>
+                el?.lastUpdatedAt === null ? null : (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        {el?.type == "public_channel" ? (
+                          <TagIcon />
+                        ) : (
+                          <LockIcon />
+                        )}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={el?.name}
+                      secondary={new Date(el?.lastUpdatedAt).toLocaleString()}
+                    />
+                  </ListItem>
+                )
+              )}
+            </List>
           </div>
-          <div style={{ fontSize: "12px", padding: "5px" }}>
-            Recent Messages
+          <div
+            style={{
+              boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+              backgroundColor: "white",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "purple",
+                padding: "8px",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              🔴 Non Synced
+            </div>
+            <List
+              sx={{
+                transition: "0.2s",
+                minWidth: open ? 225 : 235,
+                maxWidth: open ? 225 : 235,
+                minHeight: open ? 210 : 230,
+                maxHeight: open ? 100 : 230,
+                bgcolor: "transparent",
+                paddingTop: 0,
+                overflowY: "auto",
+              }}
+            >
+              {allChannels?.length ? (
+                allChannels?.map((el) =>
+                  el?.lastUpdatedAt !== null ? null : (
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar>
+                          {el?.type == "public_channel" ? (
+                            <TagIcon />
+                          ) : (
+                            <LockIcon />
+                          )}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={el?.name}
+                        secondary={"Not Synced Yet."}
+                      />
+                    </ListItem>
+                  )
+                )
+              ) : (
+                <span style={{ textAlign: "center", margin: "auto" }}>
+                  Loading...
+                </span>
+              )}
+            </List>
           </div>
         </div>
       </section>
+
+      <div
+        style={{
+          width: "70%",
+          margin: "12px",
+          boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+        }}
+      >
+        <div style={{ fontSize: "12px", padding: "20px", color: "grey" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div>Last Synced Channel 🟢</div>
+            <Select
+              style={{ marginLeft: "auto", minWidth: "140px" }}
+              variant="standard"
+              labelId="demo-select-small"
+              id="demo-select-small"
+              value={channels}
+              label="Channels"
+              onChange={handleChange}
+            >
+              <MenuItem value={"all"}>All</MenuItem>
+              <MenuItem value={"public"}>Public</MenuItem>
+              <MenuItem value={"private"}>Private</MenuItem>
+            </Select>
+          </div>
+
+          <div
+            style={{
+              fontWeight: "300",
+              padding: "4px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src="https://www.pngkey.com/png/full/984-9844126_slack-new-slack-logo-png.png"
+                width={"40px"}
+              />
+              <div style={{ fontWeight: "600", marginLeft: "20px" }}>
+                {publicChannels?.length
+                  ? channels === "public"
+                    ? latestSync(publicChannels)?.name || "No Channels Found.."
+                    : channels === "private"
+                    ? latestSync(privateChannels)?.name || "No Channels Found.."
+                    : channels === "all"
+                    ? latestSync(allChannels)?.name || "No Channels Found.."
+                    : null
+                  : "Loading.."}
+              </div>
+            </div>
+
+            <div
+              style={{
+                margin: "0 0 20px 0",
+                boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+                padding: "20px",
+                lineHeight: "1.8em",
+              }}
+            >
+              <div style={{ fontWeight: "500", color: "black" }}>
+                Channel Details
+              </div>
+              <div style={{ fontWeight: "300" }}>
+                <b>Channel Id: </b>
+                <span>
+                  {publicChannels?.length
+                    ? channels === "public"
+                      ? latestSync(publicChannels)?.slackId ||
+                        "Coudn't find record..."
+                      : channels === "private"
+                      ? latestSync(privateChannels)?.slackId ||
+                        "Coudn't find record..."
+                      : channels === "all"
+                      ? latestSync(allChannels)?.slackId ||
+                        "Coudn't find record..."
+                      : null
+                    : "Loading.."}
+                </span>
+              </div>
+              <div style={{ fontWeight: "300" }}>
+                <b>Mattermost Name: </b>
+                {publicChannels?.length
+                  ? channels === "public"
+                    ? latestSync(publicChannels)?.mattermostName ||
+                      "Coudn't find record..."
+                    : channels === "private"
+                    ? latestSync(privateChannels)?.mattermostName ||
+                      "Coudn't find record..."
+                    : channels === "all"
+                    ? latestSync(allChannels)?.mattermostName ||
+                      "Coudn't find record..."
+                    : null
+                  : "Loading.."}
+              </div>
+              <div style={{ fontWeight: "300" }}>
+                <b>Mattermost Id: </b>
+                {publicChannels?.length
+                  ? channels === "public"
+                    ? latestSync(publicChannels)?.mattermostId ||
+                      "Coudn't find record..."
+                    : channels === "private"
+                    ? latestSync(privateChannels)?.mattermostId ||
+                      "Coudn't find record..."
+                    : channels === "all"
+                    ? latestSync(allChannels)?.mattermostId ||
+                      "Coudn't find record..."
+                    : null
+                  : "Loading.."}
+              </div>
+            </div>
+
+            <div
+              style={{
+                margin: "0 0 20px 0",
+                boxShadow: "rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+                padding: "20px",
+                lineHeight: "1.8em",
+              }}
+            >
+              <div style={{ fontWeight: "500", color: "green" }}>
+                Sync Details
+              </div>
+              <div style={{ fontWeight: "300" }}>
+                <b>Synced on: </b>
+                {publicChannels?.length
+                  ? channels === "public"
+                    ? new Date(
+                        latestSync(publicChannels)?.lastUpdatedAt
+                      ).toLocaleString() || "Coudn't find record..."
+                    : channels === "private"
+                    ? new Date(
+                        latestSync(privateChannels)?.lastUpdatedAt
+                      ).toLocaleString() || "Coudn't find record..."
+                    : channels === "all"
+                    ? new Date(
+                        latestSync(allChannels)?.lastUpdatedAt
+                      ).toLocaleString() || "Coudn't find record..."
+                    : null
+                  : "Loading.."}
+              </div>
+              <div style={{ fontWeight: "300" }}>
+                <b>Time Spend on sync: </b>
+                {publicChannels?.length
+                  ? channels === "public"
+                    ? latestSync(publicChannels)?.timeSpent ||
+                      "Coudn't find record..."
+                    : channels === "private"
+                    ? latestSync(privateChannels)?.timeSpent ||
+                      "Coudn't find record..."
+                    : channels === "all"
+                    ? latestSync(allChannels)?.timeSpent ||
+                      "Coudn't find record..."
+                    : null
+                  : "Loading.."}
+              </div>
+              <div style={{ fontWeight: "300" }}>
+                <b>Fowarding Url: </b>
+                {publicChannels?.length
+                  ? channels === "public"
+                    ? latestSync(publicChannels)?.fowardUrl ||
+                      "Coudn't find record..."
+                    : channels === "private"
+                    ? latestSync(privateChannels)?.fowardUrl ||
+                      "Coudn't find record..."
+                    : channels === "all"
+                    ? latestSync(allChannels)?.fowardUrl ||
+                      "Coudn't find record..."
+                    : null
+                  : "Loading.."}
+              </div>
+              <div style={{ fontWeight: "300" }}>
+                <b>Schedule: </b>
+                {publicChannels?.length
+                  ? channels === "public"
+                    ? latestSync(publicChannels)?.schedule ||
+                      "Coudn't find record..."
+                    : channels === "private"
+                    ? latestSync(privateChannels)?.schedule ||
+                      "Coudn't find record..."
+                    : channels === "all"
+                    ? latestSync(allChannels)?.schedule ||
+                      "Coudn't find record..."
+                    : null
+                  : "Loading.."}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Dashboard;
